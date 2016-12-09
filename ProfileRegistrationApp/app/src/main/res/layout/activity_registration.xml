@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+
+    <ScrollView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+    <LinearLayout
+        android:id="@+id/activity_registration"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.example.uu097376.profileregistrationapp.RegistrationActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp">
+        <TextView
+            android:id="@+id/name"
+            android:text="氏名"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"
+            android:layout_marginLeft="15dp"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/hissu"
+            android:text="必須"
+            android:padding="5dp"
+            android:textColor="@color/colorWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/name"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/view_shape1"/>
+
+        <EditText
+            android:id="@+id/Fname"
+            android:layout_marginLeft="5dp"
+            android:layout_width="115dp"
+            android:layout_height="30dp"
+            android:hint=" 姓"
+            android:layout_toRightOf="@id/hissu"
+            android:layout_centerVertical="true"
+            android:background="@drawable/edittext_shape" />
+
+        <EditText
+            android:id="@+id/Lname"
+            android:layout_marginLeft="5dp"
+            android:layout_width="115dp"
+            android:layout_height="30dp"
+            android:hint=" 名"
+            android:layout_toRightOf="@id/Fname"
+            android:layout_centerVertical="true"
+            android:background="@drawable/edittext_shape" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:text="性別"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"
+            android:layout_marginLeft="15dp"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RadioGroup
+            android:id="@+id/sei"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="50dp"
+            android:layout_centerVertical="true">
+
+            <RadioButton
+                android:id="@+id/Man"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="男"
+                android:layout_marginLeft="55dp" />
+
+            <RadioButton
+                android:id="@+id/Woman"
+                android:text="女"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp" />
+
+         </RadioGroup>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:text="電話番号"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"
+            android:layout_marginLeft="15dp"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/Tel"
+            android:layout_marginLeft="50dp"
+            android:layout_width="205dp"
+            android:layout_height="30dp"
+            android:inputType="number"
+            android:background="@drawable/edittext_shape" />
+    </LinearLayout>
+
+    <RelativeLayout
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/HobbyText"
+                android:text="趣味"
+                android:textColor="@color/colorBlack"
+                android:textSize="20sp"
+                android:layout_marginLeft="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="aaaaaaaaaaaaaa"
+                android:id="@+id/Hobby"
+                android:layout_marginLeft="100dp"
+                android:layout_toRightOf="@+id/HobbyText"
+                android:layout_width="190dp"
+                android:layout_height="30dp" />
+
+            <Button
+                android:text="変更"
+                android:id="@+id/ChangeHobby"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@id/Hobby"
+                android:layout_below="@id/Hobby"/>
+
+    </RelativeLayout>
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:text="職業"
+                android:textColor="@color/colorBlack"
+                android:textSize="20sp"
+                android:layout_marginLeft="15dp"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/JobSelect"
+                android:layout_marginLeft="125dp"
+                android:entries="@array/spinner_values"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_shape"
+                >
+            </Spinner>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            
+            <CheckBox
+                android:id="@+id/TermsCheck"
+                android:layout_marginLeft="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            
+            <TextView
+                android:id="@+id/TextTerms"
+                android:textColor="@color/colorPrimary"
+                android:text="利用規約"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:text="に同意する"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"/>
+            
+        </LinearLayout>
+
+
+</LinearLayout>
+</ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBlack"
+        android:layout_gravity="bottom">
+
+        <Button
+            android:id="@+id/ImportCheck"
+            android:text="入力完了"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/button_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp" />
+
+
+    </RelativeLayout>
+
+
+</FrameLayout>
+
+
