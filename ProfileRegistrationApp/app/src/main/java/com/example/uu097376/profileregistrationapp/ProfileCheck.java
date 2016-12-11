@@ -27,33 +27,31 @@ public class ProfileCheck extends AppCompatActivity {
         HumanParcelable human = intent.getParcelableExtra("profile");
 
         firstName = (TextView)findViewById(R.id.FirstName);
-        lastName = (TextView)findViewById(R.id.LastName);
         number = (TextView)findViewById(R.id.Number);
         gender = (TextView)findViewById(R.id.Gender);
         hobby = (TextView)findViewById(R.id.Ht);
         job = (TextView)findViewById(R.id.Job);
 
 
-        firstName.setText(human.getFirstName());
-        lastName.setText(human.getLastName());
-        gender.setText(human.getSei());
+        firstName.setText(human.getFirstName() + " " + human.getLastName());
+        String genderString = new String();
+        if(human.getGender() == 0){
+            genderString = "男";
+        }else{
+            genderString = "女";
+        }
+        gender.setText(genderString);
         number.setText(human.getTel());
+
+        StringBuilder hobbys = new StringBuilder();
+        if(human.getHobby().size() == 0) {
+            for (int i = 0; i < human.getHobby().size(); i++) {
+                if (i != 0)
+                    hobbys.append(",");
+                hobbys.append(human.getHobby().get(i));
+            }
+            hobby.setText(hobbys.toString());
+        }
         job.setText(human.getJob());
-
-
-
-        System.out.println(human.getFirstName());
-        System.out.println(human.getLastName());
-        System.out.println(human.getSei());
-        System.out.println(human.getTel());
-        System.out.println(human.getHobby().get(0));
-        System.out.println(human.getJob());
-
-
-
-
-
-
-
     }
 }

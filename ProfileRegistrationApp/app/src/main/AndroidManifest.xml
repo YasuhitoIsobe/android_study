@@ -18,6 +18,8 @@
         <activity android:name=".ProfileCheck">
 
         </activity>
+        <activity android:name=".HobbyListActivity"/>
     </application>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>
