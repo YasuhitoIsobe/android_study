@@ -12,7 +12,6 @@ import android.widget.TextView;
 public class ProfileCheck extends AppCompatActivity {
 
     TextView firstName;
-    TextView lastName;
     TextView number;
     TextView gender;
     TextView hobby;
@@ -34,23 +33,18 @@ public class ProfileCheck extends AppCompatActivity {
 
 
         firstName.setText(human.getFirstName() + " " + human.getLastName());
-        String genderString = new String();
-        if(human.getGender() == 0){
-            genderString = "男";
-        }else{
-            genderString = "女";
-        }
-        gender.setText(genderString);
+        gender.setText(human.getGender());
         number.setText(human.getTel());
 
-        StringBuilder hobbys = new StringBuilder();
-        if(human.getHobby().size() == 0) {
+        StringBuilder hobbyString = new StringBuilder();
+        if(human.getHobby().size() != 0) {
             for (int i = 0; i < human.getHobby().size(); i++) {
                 if (i != 0)
-                    hobbys.append(",");
-                hobbys.append(human.getHobby().get(i));
+                    hobbyString.append(",");
+                hobbyString.append(human.getHobby().get(i));
             }
-            hobby.setText(hobbys.toString());
+            System.out.println(hobbyString);
+            hobby.setText(hobbyString.toString());
         }
         job.setText(human.getJob());
     }

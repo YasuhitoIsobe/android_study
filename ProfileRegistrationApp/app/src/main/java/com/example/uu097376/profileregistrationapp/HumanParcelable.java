@@ -14,7 +14,7 @@ public class HumanParcelable implements Parcelable {
 
     private String firstName;
     private String lastName;
-    private int gender;
+    private String gender;
     private String tel;
     private List<String> hobby;
     private String job;
@@ -29,7 +29,7 @@ public class HumanParcelable implements Parcelable {
     public void writeToParcel(Parcel out, int i) {
         out.writeString(firstName);
         out.writeString(lastName);
-        out.writeInt(gender);
+        out.writeString(gender);
         out.writeString(tel);
         out.writeStringList(hobby);
         out.writeString(job);
@@ -50,13 +50,13 @@ public class HumanParcelable implements Parcelable {
     private HumanParcelable(Parcel in) {
         firstName = in.readString();
         lastName = in.readString();
-        gender = in.readInt();
+        gender = in.readString();
         tel = in.readString();
         hobby = in.createStringArrayList();
         job = in.readString();
     }
 
-    public HumanParcelable(String firstName, String lastName, int gender, String tel, List hobby,String job) {
+    public HumanParcelable(String firstName, String lastName, String gender, String tel, List hobby,String job) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
@@ -81,11 +81,11 @@ public class HumanParcelable implements Parcelable {
         this.lastName = lastName;
     }
 
-    public int getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 

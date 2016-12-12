@@ -26,7 +26,7 @@ public class HobbyListActivity extends AppCompatActivity implements View.OnClick
             "音楽鑑賞",
             "料理",
             "ゲーム",
-            "その他",
+            "その他"
     };
 
     @Override

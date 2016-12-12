@@ -96,10 +96,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
             case R.id.Bt_check:
                 Log.v("確認","ボタン2");
+                int rgId = gender.getCheckedRadioButtonId();
                 HumanParcelable human = new HumanParcelable(
                         firstName.getText().toString(),
                         lastName.getText().toString(),
-                        1,
+                        ((RadioButton)findViewById(rgId)).getText().toString(),
                         tel.getText().toString(),
                         hobbyArray,
                         job.getSelectedItem().toString()
