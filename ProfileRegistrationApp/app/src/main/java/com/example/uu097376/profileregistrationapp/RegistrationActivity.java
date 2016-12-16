@@ -27,6 +27,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private final String URL = "https://www.google.co.jp/";
     private int[] checked;
     private List<String> hobbyArray;
+    // modified by Isobe
+    private boolean[] hobbyChecked = new boolean[7];
 
     EditText firstName;
     EditText lastName;
@@ -91,6 +93,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             case R.id.Bt_ChangeHobby:
                 Log.v("確認","ボタン1");
                 intent = new Intent(this,HobbyListActivity.class);
+                // modified by Isobe
+                intent.putExtra("HOBBY_ITEM_CHECKE_STATE", hobbyChecked);
                 startActivityForResult(intent,0001);
                 break;
 
@@ -133,9 +137,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         if(requestCode == 0001){
             System.out.println("戻り値受取");
             if(resultCode == Activity.RESULT_OK){
-                System.out.println("戻り値受取");
-                System.out.println("test"+intent.getIntArrayExtra("list_boolean")[0]);
-                hobbySet(intent);
+                // modified by Isobe
+                // 戻り値のHOBBY_ITEM_CHECKE_STATEを受け取ってhobbyChecked変数にセットする
+                hobbyChecked = intent.getBooleanArrayExtra("HOBBY_ITEM_CHECKE_STATE");
+
+                // ここ以降の処理は特に修正してないっす
+                // コメントアウトしないと落ちるのでコメントアウトしておく
+                // hobbySet(intent);
             }
         }
     }
