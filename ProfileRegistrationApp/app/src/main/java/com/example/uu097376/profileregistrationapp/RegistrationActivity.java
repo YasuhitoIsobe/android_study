@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -16,6 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     EditText lastName;
     RadioButton man;
     RadioButton woman;
+    RadioButton checkRadio;
     RadioGroup gender;
+    String genderString;
     EditText tel;
     TextView textHobby;
     Button buttonHobby;
@@ -88,37 +90,50 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View view){
         switch (view.getId()){
+            //趣味変更ボタンクリック処理
             case R.id.Bt_ChangeHobby:
-                Log.v("確認","ボタン1");
                 intent = new Intent(this,HobbyListActivity.class);
                 startActivityForResult(intent,0001);
                 break;
 
+            //入力完了ボタンクリック処理
             case R.id.Bt_check:
-                Log.v("確認","ボタン2");
+                //チェックされている性別ラジオボタンのIDを取得
                 int rgId = gender.getCheckedRadioButtonId();
-                HumanParcelable human = new HumanParcelable(
-                        firstName.getText().toString(),
-                        lastName.getText().toString(),
-                        ((RadioButton)findViewById(rgId)).getText().toString(),
-                        tel.getText().toString(),
-                        hobbyArray,
-                        job.getSelectedItem().toString()
-                );
-                intent =new Intent(this,ProfileCheck.class);
-                intent.putExtra("profile",human);
-                startActivity(intent);
+                //性別の状態確認
+                if((RadioButton) findViewById(rgId) == null){
+                    genderString = "";
+                }else {
+                    genderString = ((RadioButton) findViewById(rgId)).getText().toString();
+                }
+                //氏名必須チェック
+                if(firstName.getText().toString().equals("") || lastName.getText().toString().equals("")){
+                    Toast.makeText(this,"姓名が未入力です",Toast.LENGTH_SHORT).show();
+                }else {
+                    HumanParcelable human = new HumanParcelable(
+                            firstName.getText().toString(),
+                            lastName.getText().toString(),
+                            genderString,
+                            tel.getText().toString(),
+                            hobbyArray,
+                            job.getSelectedItem().toString()
+                    );
+                    //確認画面遷移処理
+                    intent = new Intent(this, ProfileCheck.class);
+                    intent.putExtra("profile", human);
+                    startActivity(intent);
+                }
                 break;
-
+            //利用規約チェックボックスクリック処理
             case R.id.Cb_Terms:
                 if(checkTerms.isChecked() == true ){
                     buttonCheck.setEnabled(true);
                 }else{
                     buttonCheck.setEnabled(false);
                 }
-                System.out.println(String.valueOf(checkTerms.isChecked()));
                 break;
 
+            //テキスト「利用規約」クリック時処理
             case R.id.Tv_Terms:
                 Uri uri = Uri.parse(URL);
                 Intent intent = new Intent(Intent.ACTION_VIEW,uri);
@@ -152,51 +167,57 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     if(checked[i] == 1){
                         hobbyText.append("スポーツ");
                         hobbyArray.add("スポーツ");
+                        if(i != checked.length){
+                            hobbyText.append(",");
+                        }
 
                     }
                     break;
 
                 case 1:
                     if(checked[i] == 1){
-                        hobbyText.append(",映画鑑賞");
+                        hobbyText.append("映画鑑賞");
                         hobbyArray.add("映画鑑賞");
                     }
                     break;
 
                 case 2:
                     if(checked[i] == 1){
-                        hobbyText.append(",旅行");
+                        hobbyText.append("旅行");
                         hobbyArray.add("旅行");
                     }
                     break;
 
                 case 3:
                     if(checked[i] == 1){
-                        hobbyText.append(",音楽鑑賞");
+                        hobbyText.append("音楽鑑賞");
                         hobbyArray.add("音楽鑑賞");
                     }
                     break;
 
                 case 4:
                     if(checked[i] == 1){
-                        hobbyText.append(",料理");
+                        hobbyText.append("料理");
                         hobbyArray.add("料理");
                     }
                     break;
 
                 case 5:
                     if(checked[i] == 1){
-                        hobbyText.append(",ゲーム");
+                        hobbyText.append("ゲーム");
                         hobbyArray.add("ゲーム");
                     }
                     break;
 
                 case 6:
                     if(checked[i] == 1){
-                        hobbyText.append(",その他");
+                        hobbyText.append("その他");
                         hobbyArray.add("その他");
                     }
                     break;
+            }
+            if(i != checked.length){
+                hobbyText.append(",");
             }
         }
         System.out.print("hobbySet通過");

@@ -54,8 +54,11 @@ public class HobbyListActivity extends AppCompatActivity implements View.OnClick
     //
     public void onClick(View view){
         SparseBooleanArray checked = hobbyList.getCheckedItemPositions();
+        System.out.println("確認です"+checked);
+        Boolean[] checked3 = new Boolean[checked.size()];
         int[] checked2 = new int[checked.size()];
         for(int i = 0;i < checked.size();i++){
+            checked3[i] = checked.get(i);
             if(checked.get(i) == true){
                 checked2[i] = 1;
             }else {
@@ -64,7 +67,7 @@ public class HobbyListActivity extends AppCompatActivity implements View.OnClick
         }
 
         Intent intent = new Intent();
-        intent.putExtra("list_boolean",checked2);
+        intent.putExtra("list_boolean",checked3);
         setResult(Activity.RESULT_OK,intent);
         finish();
     }

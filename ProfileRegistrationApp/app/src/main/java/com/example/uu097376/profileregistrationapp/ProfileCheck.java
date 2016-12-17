@@ -37,13 +37,12 @@ public class ProfileCheck extends AppCompatActivity {
         number.setText(human.getTel());
 
         StringBuilder hobbyString = new StringBuilder();
-        if(human.getHobby().size() != 0) {
+        if(human.getHobby() != null) {
             for (int i = 0; i < human.getHobby().size(); i++) {
                 if (i != 0)
                     hobbyString.append(",");
                 hobbyString.append(human.getHobby().get(i));
             }
-            System.out.println(hobbyString);
             hobby.setText(hobbyString.toString());
         }
         job.setText(human.getJob());
