@@ -90,36 +90,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         checkTerms.setOnClickListener(this);
         textTerms.setOnClickListener(this);
 
-        firstName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+        // テキスト変更イベントリスナークラスを生成
+        NameTextWatcher nameTextWatcher = new NameTextWatcher();
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                changeNextButtonState();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-        lastName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                changeNextButtonState();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
+        // イベントリスナーと紐付け
+        firstName.addTextChangedListener(nameTextWatcher);
+        lastName.addTextChangedListener(nameTextWatcher);
     }
 
     @Override
@@ -196,6 +172,22 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             buttonCheck.setEnabled(true);
         } else {
             buttonCheck.setEnabled(false);
+        }
+    }
+
+    // テキスト変更イベントを検知するためのリスナークラスを内部クラスとして定義
+    class NameTextWatcher implements TextWatcher {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            RegistrationActivity.this.changeNextButtonState();
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
         }
     }
 }
