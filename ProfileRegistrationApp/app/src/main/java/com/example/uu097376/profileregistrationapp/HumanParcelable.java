@@ -14,10 +14,10 @@ public class HumanParcelable implements Parcelable {
 
     private String firstName;
     private String lastName;
-    private String gender;
+    private int sex;
     private String tel;
-    private List<String> hobby;
-    private String job;
+    private boolean[] hobbySelectedArray;
+    private int job;
 
 
     @Override
@@ -29,11 +29,10 @@ public class HumanParcelable implements Parcelable {
     public void writeToParcel(Parcel out, int i) {
         out.writeString(firstName);
         out.writeString(lastName);
-        out.writeString(gender);
+        out.writeInt(sex);
         out.writeString(tel);
-        out.writeStringList(hobby);
-        out.writeString(job);
-
+        out.writeBooleanArray(hobbySelectedArray);
+        out.writeInt(job);
     }
 
     public static final Parcelable.Creator<HumanParcelable> CREATOR
@@ -48,20 +47,20 @@ public class HumanParcelable implements Parcelable {
     };
 
     private HumanParcelable(Parcel in) {
-        firstName = in.readString();
-        lastName = in.readString();
-        gender = in.readString();
-        tel = in.readString();
-        hobby = in.createStringArrayList();
-        job = in.readString();
+        this.firstName = in.readString();
+        this.lastName = in.readString();
+        this.sex = in.readInt();
+        this.tel = in.readString();
+        this.hobbySelectedArray = in.createBooleanArray();
+        this.job = in.readInt();
     }
 
-    public HumanParcelable(String firstName, String lastName, String gender, String tel, List hobby,String job) {
+    public HumanParcelable(String firstName, String lastName, int sex, String tel, boolean[] hobbySelectedArray,int job) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.gender = gender;
+        this.sex = sex;
         this.tel = tel;
-        this.hobby = hobby;
+        this.hobbySelectedArray = hobbySelectedArray;
         this.job = job;
     }
 
@@ -81,12 +80,12 @@ public class HumanParcelable implements Parcelable {
         this.lastName = lastName;
     }
 
-    public String getGender() {
-        return gender;
+    public int getSex() {
+        return this.sex;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setSex(int sex) {
+        this.sex = sex;
     }
 
     public String getTel() {
@@ -97,19 +96,19 @@ public class HumanParcelable implements Parcelable {
         this.tel = tel;
     }
 
-    public List getHobby() {
-        return hobby;
+    public boolean[] getHobbySelecteArray() {
+        return this.hobbySelectedArray;
     }
 
-    public void setHobby(ArrayList hobby) {
-        this.hobby = hobby;
+    public void setHobbySelectedArray(boolean[] hobbySelectedArray) {
+        this.hobbySelectedArray = hobbySelectedArray;
     }
 
-    public String getJob() {
+    public int getJob() {
         return job;
     }
 
-    public void setJob(String job) {
+    public void setJob(int job) {
         this.job = job;
     }
 }

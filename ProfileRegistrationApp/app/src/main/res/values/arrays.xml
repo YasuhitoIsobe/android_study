@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="spinner_values">
-        <item>test1</item>
-        <item>test2</item>
+    <string-array name="job_values">
+        <item/>
+        <item>プログラマ</item>
+        <item>テスター</item>
+        <item>システムエンジニア</item>
+        <item>プロジェクトリーダー</item>
+        <item>プロジェクトマネージャー</item>
+        <item>その他</item>
+    </string-array>
+
+    <string-array name="sex_values">
+        <item/>
+        <item>男</item>
+        <item>女</item>
+    </string-array>
+
+    <string-array name="hobby_values">
+        <item>スポーツ</item>
+        <item>映画鑑賞</item>
+        <item>旅行</item>
+        <item>音楽鑑賞</item>
+        <item>料理</item>
+        <item>ゲーム</item>
+        <item>その他</item>
     </string-array>
 
 </resources>

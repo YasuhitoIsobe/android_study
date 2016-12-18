@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,17 +26,20 @@ import static com.example.uu097376.profileregistrationapp.R.id.Tv_Terms;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private final String URL = "https://www.google.co.jp/";
-    private int[] checked;
-    private List<String> hobbyArray;
+    private static final String URL = "https://www.google.co.jp/";
+    private static final int REQUEST_CODE = 1;
+    private static final int SEX_NO_SELECTED = 0;
+    private static final int SEX_MAN_SELECTED = 1;
+    private static final int SEX_WOMAN_SELECTED = 2;
+
     // modified by Isobe
-    private boolean[] hobbyChecked = new boolean[7];
+    private String[] hobbyArray;
+    private boolean[] hobbyChecked;
 
     EditText firstName;
     EditText lastName;
     RadioButton man;
     RadioButton woman;
-    RadioGroup gender;
     EditText tel;
     TextView textHobby;
     Button buttonHobby;
@@ -42,12 +47,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     CheckBox checkTerms;
     TextView textTerms;
     Button buttonCheck;
-
-
-    List<Integer> hobbyList;
     Intent intent;
-
-
 
 
     @Override
@@ -55,11 +55,16 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        // 趣味リスト取得
+        hobbyArray = getResources().getStringArray(R.array.hobby_values);
+
+        // 趣味のチェック状態を初期化する
+        hobbyChecked = new boolean[hobbyArray.length];
+
         firstName = (EditText)findViewById(R.id.Et_First_Name);
         lastName = (EditText)findViewById(R.id.Et_Last_Name);
         man = (RadioButton)findViewById(R.id.Rb_Man);
         woman = (RadioButton)findViewById(R.id.Rb_Woman);
-        gender = (RadioGroup)findViewById(R.id.Rg_Gender);
         tel = (EditText)findViewById(R.id.Et_Tel);
         textHobby = (TextView)findViewById(R.id.Tv_Hobby);
         buttonHobby = (Button)findViewById(R.id.Bt_ChangeHobby);
@@ -68,7 +73,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         textTerms = (TextView)findViewById(Tv_Terms);
         buttonCheck = (Button)findViewById(R.id.Bt_check);
         buttonCheck.setEnabled(false);
-
     }
 
     @Override
@@ -85,6 +89,37 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         buttonCheck.setOnClickListener(this);
         checkTerms.setOnClickListener(this);
         textTerms.setOnClickListener(this);
+
+        firstName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                changeNextButtonState();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        lastName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                changeNextButtonState();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
     }
 
     @Override
@@ -95,19 +130,26 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 intent = new Intent(this,HobbyListActivity.class);
                 // modified by Isobe
                 intent.putExtra("HOBBY_ITEM_CHECKE_STATE", hobbyChecked);
-                startActivityForResult(intent,0001);
+                startActivityForResult(intent, REQUEST_CODE);
                 break;
 
             case R.id.Bt_check:
                 Log.v("確認","ボタン2");
-                int rgId = gender.getCheckedRadioButtonId();
+
+                int selectedSex = SEX_NO_SELECTED;
+                if (man.isChecked()) {
+                    selectedSex = SEX_MAN_SELECTED;
+                } else if (woman.isChecked()) {
+                    selectedSex = SEX_WOMAN_SELECTED;
+                }
+
                 HumanParcelable human = new HumanParcelable(
                         firstName.getText().toString(),
                         lastName.getText().toString(),
-                        ((RadioButton)findViewById(rgId)).getText().toString(),
+                        selectedSex,
                         tel.getText().toString(),
-                        hobbyArray,
-                        job.getSelectedItem().toString()
+                        hobbyChecked,
+                        job.getSelectedItemPosition()
                 );
                 intent =new Intent(this,ProfileCheck.class);
                 intent.putExtra("profile",human);
@@ -115,9 +157,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 break;
 
             case R.id.Cb_Terms:
-                if(checkTerms.isChecked() == true ){
+
+                if(checkTerms.isChecked() && !("".equals(firstName.getText().toString())) && !("".equals(lastName.getText().toString()))) {
                     buttonCheck.setEnabled(true);
-                }else{
+                }else {
                     buttonCheck.setEnabled(false);
                 }
                 System.out.println(String.valueOf(checkTerms.isChecked()));
@@ -134,80 +177,25 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onActivityResult(int requestCode,int resultCode,Intent intent){
         System.out.println("戻り値受取");
-        if(requestCode == 0001){
+        if(requestCode == REQUEST_CODE){
             System.out.println("戻り値受取");
             if(resultCode == Activity.RESULT_OK){
                 // modified by Isobe
                 // 戻り値のHOBBY_ITEM_CHECKE_STATEを受け取ってhobbyChecked変数にセットする
                 hobbyChecked = intent.getBooleanArrayExtra("HOBBY_ITEM_CHECKE_STATE");
 
-                // ここ以降の処理は特に修正してないっす
-                // コメントアウトしないと落ちるのでコメントアウトしておく
-                // hobbySet(intent);
+                // 趣味の文字列設定
+                textHobby.setText(ProfileResistrationAppUtil.getHobbyDispString(hobbyArray, hobbyChecked));
             }
         }
     }
 
+    private void changeNextButtonState() {
 
-    private void hobbySet(Intent intent){
-        checked = intent.getIntArrayExtra("list_boolean");
-        StringBuilder hobbyText = new StringBuilder();
-        hobbyArray = new ArrayList<String>();
-        for(int i = 0;i<checked.length;i++){
-            System.out.println(checked[i]);
-            switch (i){
-                case 0:
-                    if(checked[i] == 1){
-                        hobbyText.append("スポーツ");
-                        hobbyArray.add("スポーツ");
-
-                    }
-                    break;
-
-                case 1:
-                    if(checked[i] == 1){
-                        hobbyText.append(",映画鑑賞");
-                        hobbyArray.add("映画鑑賞");
-                    }
-                    break;
-
-                case 2:
-                    if(checked[i] == 1){
-                        hobbyText.append(",旅行");
-                        hobbyArray.add("旅行");
-                    }
-                    break;
-
-                case 3:
-                    if(checked[i] == 1){
-                        hobbyText.append(",音楽鑑賞");
-                        hobbyArray.add("音楽鑑賞");
-                    }
-                    break;
-
-                case 4:
-                    if(checked[i] == 1){
-                        hobbyText.append(",料理");
-                        hobbyArray.add("料理");
-                    }
-                    break;
-
-                case 5:
-                    if(checked[i] == 1){
-                        hobbyText.append(",ゲーム");
-                        hobbyArray.add("ゲーム");
-                    }
-                    break;
-
-                case 6:
-                    if(checked[i] == 1){
-                        hobbyText.append(",その他");
-                        hobbyArray.add("その他");
-                    }
-                    break;
-            }
+        if(checkTerms.isChecked() && !("".equals(firstName.getText().toString())) && !("".equals(lastName.getText().toString()))) {
+            buttonCheck.setEnabled(true);
+        } else {
+            buttonCheck.setEnabled(false);
         }
-        System.out.print("hobbySet通過");
-        textHobby.setText(hobbyText);
     }
 }
