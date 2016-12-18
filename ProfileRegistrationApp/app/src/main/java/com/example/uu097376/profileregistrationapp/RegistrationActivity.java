@@ -1,7 +1,6 @@
 package com.example.uu097376.profileregistrationapp;
 
 //プロフィール登録フォーム
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,19 +8,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.example.uu097376.profileregistrationapp.R.id.Tv_Terms;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener{
@@ -32,23 +25,19 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private static final int SEX_MAN_SELECTED = 1;
     private static final int SEX_WOMAN_SELECTED = 2;
 
-    // modified by Isobe
     private String[] hobbyArray;
     private boolean[] hobbyChecked;
-
-    EditText firstName;
-    EditText lastName;
-    RadioButton man;
-    RadioButton woman;
-    EditText tel;
-    TextView textHobby;
-    Button buttonHobby;
-    Spinner job;
-    CheckBox checkTerms;
-    TextView textTerms;
-    Button buttonCheck;
-    Intent intent;
-
+    private EditText firstName;
+    private EditText lastName;
+    private RadioButton man;
+    private RadioButton woman;
+    private EditText tel;
+    private TextView textHobby;
+    private Button buttonHobby;
+    private Spinner job;
+    private CheckBox checkTerms;
+    private TextView textTerms;
+    private Button buttonCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,16 +91,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view){
         switch (view.getId()){
             case R.id.Bt_ChangeHobby:
-                Log.v("確認","ボタン1");
-                intent = new Intent(this,HobbyListActivity.class);
-                // modified by Isobe
-                intent.putExtra("HOBBY_ITEM_CHECKE_STATE", hobbyChecked);
-                startActivityForResult(intent, REQUEST_CODE);
+                Intent changeHobbyScreenIntent = new Intent(this,HobbyListActivity.class);
+                changeHobbyScreenIntent.putExtra("HOBBY_ITEM_CHECKE_STATE", hobbyChecked);
+                startActivityForResult(changeHobbyScreenIntent, REQUEST_CODE);
+
                 break;
 
             case R.id.Bt_check:
-                Log.v("確認","ボタン2");
-
+                // 性別の選択状態を取得
                 int selectedSex = SEX_NO_SELECTED;
                 if (man.isChecked()) {
                     selectedSex = SEX_MAN_SELECTED;
@@ -119,7 +106,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     selectedSex = SEX_WOMAN_SELECTED;
                 }
 
-                HumanParcelable human = new HumanParcelable(
+                // 次画面に受け渡すパラメータを生成
+                HumanParcelable humanParcelable = new HumanParcelable(
                         firstName.getText().toString(),
                         lastName.getText().toString(),
                         selectedSex,
@@ -127,47 +115,43 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         hobbyChecked,
                         job.getSelectedItemPosition()
                 );
-                intent =new Intent(this,ProfileCheck.class);
-                intent.putExtra("profile",human);
-                startActivity(intent);
+
+                Intent profileCheckScreenIntent = new Intent(this, ProfileCheck.class);
+                profileCheckScreenIntent.putExtra("profile", humanParcelable);
+                startActivity(profileCheckScreenIntent);
+
                 break;
 
             case R.id.Cb_Terms:
+                // 次画面遷移ボタンを有効・無効化する判定を行う
+                changeNextButtonState();
 
-                if(checkTerms.isChecked() && !("".equals(firstName.getText().toString())) && !("".equals(lastName.getText().toString()))) {
-                    buttonCheck.setEnabled(true);
-                }else {
-                    buttonCheck.setEnabled(false);
-                }
-                System.out.println(String.valueOf(checkTerms.isChecked()));
                 break;
 
             case R.id.Tv_Terms:
                 Uri uri = Uri.parse(URL);
-                Intent intent = new Intent(Intent.ACTION_VIEW,uri);
-                startActivity(intent);
+                Intent webViewIntent = new Intent(Intent.ACTION_VIEW,uri);
+                startActivity(webViewIntent);
 
+                break;
         }
     }
 
     @Override
     public void onActivityResult(int requestCode,int resultCode,Intent intent){
-        System.out.println("戻り値受取");
-        if(requestCode == REQUEST_CODE){
-            System.out.println("戻り値受取");
-            if(resultCode == Activity.RESULT_OK){
-                // modified by Isobe
-                // 戻り値のHOBBY_ITEM_CHECKE_STATEを受け取ってhobbyChecked変数にセットする
-                hobbyChecked = intent.getBooleanArrayExtra("HOBBY_ITEM_CHECKE_STATE");
+        if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            // 戻り値のHOBBY_ITEM_CHECKE_STATEを受け取ってhobbyChecked変数にセットする
+            hobbyChecked = intent.getBooleanArrayExtra("HOBBY_ITEM_CHECKE_STATE");
 
-                // 趣味の文字列設定
-                textHobby.setText(ProfileResistrationAppUtil.getHobbyDispString(hobbyArray, hobbyChecked));
-            }
+            // 趣味の文字列設定
+            textHobby.setText(ProfileResistrationAppUtil.getHobbyDispString(hobbyArray, hobbyChecked));
         }
     }
 
+    // 次画面遷移可能かどうかを判定してボタンの有効・無効を切り替えるメソッド
     private void changeNextButtonState() {
 
+        // 規約チェック、名前（姓）、名前（名）が全てチェック・入力済の場合のみ次画面遷移用のボタンを有効にする
         if(checkTerms.isChecked() && !("".equals(firstName.getText().toString())) && !("".equals(lastName.getText().toString()))) {
             buttonCheck.setEnabled(true);
         } else {

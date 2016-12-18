@@ -3,9 +3,6 @@ package com.example.uu097376.profileregistrationapp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by uu097376 on 2016/12/08.
  */

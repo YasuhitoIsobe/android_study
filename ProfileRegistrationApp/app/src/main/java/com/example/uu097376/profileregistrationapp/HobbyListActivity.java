@@ -19,19 +19,11 @@ public class HobbyListActivity extends AppCompatActivity implements View.OnClick
     ListView hobbyList;
     Button buttonSet;
 
-    //Listアイテム
-    private String[] item = new String[]{
-            "スポーツ",
-            "映画鑑賞",
-            "旅行",
-            "音楽鑑賞",
-            "料理",
-            "ゲーム",
-            "その他"
-    };
+    // 趣味マスタの文字列リスト
+    private String[] hobbyListArray;
 
-    // modified by Isobe
-    private boolean[] itemChecked;
+    // 趣味のチェック状態
+    private boolean[] hobbyCheckedArray;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -41,48 +33,45 @@ public class HobbyListActivity extends AppCompatActivity implements View.OnClick
         buttonSet = (Button)findViewById(R.id.Bt_ok) ;
         hobbyList = (ListView)findViewById(R.id.list_hobby);
 
+        // 趣味マスタに値をセットする
+        hobbyListArray = getResources().getStringArray(R.array.hobby_values);
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this,android.R.layout.simple_list_item_multiple_choice,item);
+                this,android.R.layout.simple_list_item_multiple_choice, hobbyListArray);
         hobbyList.setAdapter(adapter);
 
-        // modified by Isobe
+        // 趣味の選択状態を前画面から取得する
         Intent intent = getIntent();
-        itemChecked = intent.getBooleanArrayExtra("HOBBY_ITEM_CHECKE_STATE");
+        hobbyCheckedArray = intent.getBooleanArrayExtra("HOBBY_ITEM_CHECKE_STATE");
 
         // 画面表示時に前画面から渡ってきたパラメータを元にチェック状態をセットする
-        for (int i = 0; i < itemChecked.length; i++) {
-            if (itemChecked[i] == true) {
+        for (int i = 0; i < hobbyCheckedArray.length; i++) {
+            if (hobbyCheckedArray[i] == true) {
                 hobbyList.setItemChecked(i, true);
             }
         }
 
         buttonSet.setOnClickListener(this);
 
-        // modified by Isobe
+        // チェックボックスのクリックイベントを取得してチェックボックスのON、OFF状態を内部の変数に保持する
         hobbyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CheckedTextView selectedHobbyItem = (CheckedTextView) view;
 
                 // チェックボックスのON、OFF状態をチェックが変更されるたびにitemCheckedに設定する
-                itemChecked[position] = selectedHobbyItem.isChecked();
-
-                // デバッグ出力
-                System.out.println("item:" + item[position] + ", checkbox:" + selectedHobbyItem.isChecked());
+                hobbyCheckedArray[position] = selectedHobbyItem.isChecked();
             }
         });
 
-                                         }
+    }
 
     //
     public void onClick(View view){
-        // modified by Isobe
-        // 「設定」ボタンタップ時は戻り値としてitemCheckedを戻すだけ
-
+        // 「設定」ボタンタップ時は戻り値としてhobbyCheckedArrayを戻す
         Intent intent = new Intent();
-        intent.putExtra("HOBBY_ITEM_CHECKE_STATE", itemChecked);
+        intent.putExtra("HOBBY_ITEM_CHECKE_STATE", hobbyCheckedArray);
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
-
 }
