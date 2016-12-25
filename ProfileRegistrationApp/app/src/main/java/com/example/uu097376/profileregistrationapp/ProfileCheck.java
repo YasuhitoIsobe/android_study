@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 public class ProfileCheck extends AppCompatActivity {
 
-    TextView firstName;
+    TextView name;
     TextView number;
     TextView gender;
     TextView hobby;
@@ -22,29 +22,33 @@ public class ProfileCheck extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_check_activity);
 
+        String[] genderArray = getResources().getStringArray(R.array.gender_values);
+        String[] hobbyArray = getResources().getStringArray(R.array.hobby_list);
+
         Intent intent = getIntent();
         HumanParcelable human = intent.getParcelableExtra("profile");
 
-        firstName = (TextView)findViewById(R.id.FirstName);
+        name = (TextView)findViewById(R.id.FirstName);
         number = (TextView)findViewById(R.id.Number);
         gender = (TextView)findViewById(R.id.Gender);
         hobby = (TextView)findViewById(R.id.Ht);
         job = (TextView)findViewById(R.id.Job);
 
 
-        firstName.setText(human.getFirstName() + " " + human.getLastName());
-        gender.setText(human.getGender());
+        name.setText(human.getFirstName() + " " + human.getLastName());
+        gender.setText(genderArray[human.getGender()]);
         number.setText(human.getTel());
+        hobby.setText(HobbyStringSet.hobbySet(human.getHobby(),hobbyArray));
 
-        StringBuilder hobbyString = new StringBuilder();
+/*        StringBuilder hobbyString = new StringBuilder();
         if(human.getHobby() != null) {
-            for (int i = 0; i < human.getHobby().size(); i++) {
+*//*            for (int i = 0; i < human.getHobby().size(); i++) {
                 if (i != 0)
                     hobbyString.append(",");
                 hobbyString.append(human.getHobby().get(i));
-            }
+            }*//*
             hobby.setText(hobbyString.toString());
-        }
+        }*/
         job.setText(human.getJob());
     }
 }
